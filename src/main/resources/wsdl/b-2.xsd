@@ -158,7 +158,7 @@
 	</xsd:complexType>
 	<xsd:element name="NotificationMessage" type="wsnt:NotificationMessageHolderType" />
 
-	<!-- ========== Message Types for NotificationConsumer =========== -->
+	<!-- ========== Message Types for NotificationConsumerImpl =========== -->
 	<xsd:element name="Notify">
 		<xsd:complexType>
 			<xsd:sequence>

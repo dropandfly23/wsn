@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class App {
+public class App implements NotificationListener{
     private JTextField TextUrl;
     private JButton ButtonStartStop;
     private JTextField TextTopic;
@@ -32,6 +32,9 @@ public class App {
         ListModelMessagesRecus = new DefaultListModel();
         ListNotifications.setModel(ListModelMessagesRecus);
 
+        client = new Client();
+        client.setNotificationListener(this);
+
         listeNotifications = new ArrayList<Notification>();
 
         ButtonStartStop.addActionListener(new ActionListener() {
@@ -39,8 +42,7 @@ public class App {
 
                 if(ButtonStartStop.getText() == "Start") {
                     try {
-                        client = new Client( TextPort.getText());
-                        client.abonnement(TextUrl.getText(), TextTopic.getText(), TextFiltre.getText());
+                        client.abonnement(TextUrl.getText(), TextTopic.getText(), TextFiltre.getText(), TextPort.getText());
                         ButtonStartStop.setText("Stop");
                         ButtonStartStop.setBackground(Color.RED);
                     } catch (Exception e1) {
@@ -52,7 +54,6 @@ public class App {
                         client.desabonnement();
                         ButtonStartStop.setText("Start");
                         ButtonStartStop.setBackground(Color.GREEN);
-                        client = null;
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -86,7 +87,8 @@ public class App {
         frame.setVisible(true);
     }
 
-    public void addNotification(Notification notification){
+    @Override
+    public void nouvelleNotification(Notification notification){
         listeNotifications.add(notification);
         ((DefaultListModel) ListNotifications.getModel()).addElement(notification.getDate());
     }
