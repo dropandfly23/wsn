@@ -1,0 +1,14 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b="http://docs.oasis-open.org/wsn/b-2" xmlns:add="http://www.w3.org/2005/08/addressing">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <b:Subscribe>
+            <b:ConsumerReference>
+                <add:Address>http://${adresse}:${port}/</add:Address>
+            </b:ConsumerReference>
+            <b:Filter>
+                <b:TopicExpression>${topic}</b:TopicExpression>
+                <!--<b:MessageContent>//numeroVehicule/text()='${#Project#Vehicule}'</b:MessageContent>-->
+            </b:Filter>
+        </b:Subscribe>
+    </soapenv:Body>
+</soapenv:Envelope>
