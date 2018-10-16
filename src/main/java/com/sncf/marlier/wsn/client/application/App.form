@@ -63,7 +63,7 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
-          <text value="http://"/>
+          <text value="http://n1.rec.canaltrain.sncf.fr/cxf/wsn/NotificationBroker"/>
           <toolTipText value="URL Serveur"/>
         </properties>
       </component>
@@ -83,7 +83,7 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
-          <text value="VitrualTopic."/>
+          <text value="GeolocTopic"/>
           <toolTipText value="Topic"/>
         </properties>
       </component>

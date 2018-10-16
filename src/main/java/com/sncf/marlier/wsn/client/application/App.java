@@ -1,7 +1,5 @@
 package com.sncf.marlier.wsn.client.application;
 
-import org.oasis_open.docs.wsn.brw_2.NotificationBroker;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -16,7 +14,7 @@ public class App implements NotificationListener{
     private JButton ButtonStartStop;
     private JTextField TextTopic;
     private JList ListNotifications;
-    private ListModel ListModelMessagesRecus;
+    private ListModel<String> ListModelMessagesRecus;
     private JSplitPane SplitPaneMessages;
     private JPanel PanelApp;
     private JTextPane TextPaneNotification;
@@ -25,33 +23,36 @@ public class App implements NotificationListener{
     private JTextField TextPort;
     private JTextField TextFiltre;
 
-    private Client client;
+    private Abonnement abonnement;
     private final List<Notification> listeNotifications;
 
     public App() {
         ListModelMessagesRecus = new DefaultListModel();
         ListNotifications.setModel(ListModelMessagesRecus);
 
-        client = new Client();
-        client.setNotificationListener(this);
-
         listeNotifications = new ArrayList<Notification>();
 
         ButtonStartStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                if(ButtonStartStop.getText() == "Start") {
+                if(ButtonStartStop.getText().equals("Start")) {
                     try {
-                        client.abonnement(TextUrl.getText(), TextTopic.getText(), TextFiltre.getText(), TextPort.getText());
+                        abonnement = new Abonnement(TextUrl.getText(), TextPort.getText(), TextTopic.getText(), TextFiltre.getText());
+                        abonnement.abonnement();
                         ButtonStartStop.setText("Stop");
                         ButtonStartStop.setBackground(Color.RED);
                     } catch (Exception e1) {
                         e1.printStackTrace();
+                        try {
+                            abonnement.desabonnement();
+                        } catch (Exception e2) {
+                            e2.printStackTrace();
+                        }
                     }
                 }
                 else {
                     try {
-                        client.desabonnement();
+                        abonnement.desabonnement();
                         ButtonStartStop.setText("Start");
                         ButtonStartStop.setBackground(Color.GREEN);
                     } catch (Exception e1) {
@@ -80,8 +81,9 @@ public class App implements NotificationListener{
         } catch (Exception e) {
             // If Nimbus is not available, you can set the GUI to another look and feel.
         }
-        JFrame frame = new JFrame("wsn-client");
-        frame.setContentPane(new App().PanelApp);
+        JFrame frame = new JFrame("wsn-abonnement");
+        JPanel panel = new App().PanelApp;
+        frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

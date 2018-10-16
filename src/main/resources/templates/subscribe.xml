@@ -3,7 +3,7 @@
     <soapenv:Body>
         <b:Subscribe>
             <b:ConsumerReference>
-                <add:Address>http://${adresse}:${port}/</add:Address>
+                <add:Address>http://${adresseClient}:${port}/</add:Address>
             </b:ConsumerReference>
             <b:Filter>
                 <b:TopicExpression>${topic}</b:TopicExpression>
