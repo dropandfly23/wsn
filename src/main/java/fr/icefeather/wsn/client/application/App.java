@@ -1,14 +1,19 @@
 package fr.icefeather.wsn.client.application;
 
-import com.sun.net.httpserver.Headers;
+import org.apache.batik.util.gui.xmleditor.XMLEditorKit;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.*;
 import java.util.List;
 
@@ -19,7 +24,7 @@ public class App implements NotificationListener {
     private JList ListNotifications;
     private ListModel<String> ListModelMessagesRecus;
     private JPanel PanelApp;
-    private JTextArea TextPaneNotification;
+    private JEditorPane EditorPaneNotification;
     private JScrollPane ScrollPaneTextPaneNotification;
     private JScrollPane ScrollPaneListNotifications;
     private JTextField TextPort;
@@ -32,9 +37,31 @@ public class App implements NotificationListener {
     private Serveur serveur;
     private final List<Notification> listeNotifications;
 
+
     public App() {
+        // DATA
+        listeNotifications = new ArrayList<Notification>();
+
+        // ELEMENTS
+//        ButtonStartStop.requestFocusInWindow();
+
+        final AppForm formulaire = new AppForm();
+
+        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", null, true);
+        formulaire.formFields.add(urlTextField);
+        final AppTextField topicTextField = new AppTextField(TextTopic, "Topic", null, true);
+        formulaire.formFields.add(topicTextField);
+        final AppTextField filtreTextField = new AppTextField(TextFiltre, "Filtre", null, false);
+        formulaire.formFields.add(filtreTextField);
+        final AppTextField portTextField = new AppTextField(TextPort, "8011", "8011", true);
+        formulaire.formFields.add(portTextField);
+
+        // VIEWS
+
         ListModelMessagesRecus = new DefaultListModel();
         ListNotifications.setModel(ListModelMessagesRecus);
+
+        EditorPaneNotification.setEditorKit(new XMLEditorKit());
 
         ScrollPaneTextPaneNotification.setBorder(null);
         ScrollPaneListNotifications.setBorder(null);
@@ -43,7 +70,6 @@ public class App implements NotificationListener {
         TableNotificationHeadersModel.setColumnIdentifiers(new String[] { "header", "value" });
         TableNotificationHeaders.setModel(TableNotificationHeadersModel);
 
-        listeNotifications = new ArrayList<Notification>();
 
         serveur = new Serveur();
         serveur.setNotificationListener(this);
@@ -52,19 +78,29 @@ public class App implements NotificationListener {
             public void actionPerformed(ActionEvent e) {
 
                 if (ButtonStartStop.getText().equals("Start")) {
-                    try {
-                        abonnement = new Abonnement(TextUrl.getText(), TextPort.getText(), TextTopic.getText(), TextFiltre.getText());
-                        serveur.setPort(Integer.parseInt(TextPort.getText()));
-                        serveur.start();
-                        abonnement.abonnement();
-                        ButtonStartStop.setText("Stop");
-                        ButtonStartStop.setBackground(Color.RED);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
+                    if(formulaire.valider()) {
                         try {
-                            abonnement.desabonnement();
-                        } catch (Exception e2) {
-                            e2.printStackTrace();
+                            abonnement = new Abonnement(urlTextField.getText(), portTextField.getText(), topicTextField.getText(), filtreTextField.getText());
+                            serveur.setPort(Integer.parseInt(TextPort.getText()));
+                            serveur.start();
+                            abonnement.abonnement();
+                            ButtonStartStop.setText("Stop");
+                            ButtonStartStop.setForeground(Color.RED);
+                        } catch (Exception e1) {
+                            JOptionPane d = new JOptionPane();
+                            d.showMessageDialog( PanelApp.getParent(),
+                                    e1.getMessage(),
+                                    "Erreur lors du démarrage du client",
+                                    JOptionPane.ERROR_MESSAGE);
+                            try {
+                                abonnement.desabonnement();
+                            } catch (Exception e2) {
+                                d = new JOptionPane();
+                                d.showMessageDialog( PanelApp.getParent(),
+                                        e2.getMessage(),
+                                        "Erreur lors du désabonnement du client",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
                 } else {
@@ -72,9 +108,13 @@ public class App implements NotificationListener {
                         serveur.stop();
                         abonnement.desabonnement();
                         ButtonStartStop.setText("Start");
-                        ButtonStartStop.setBackground(Color.GREEN);
+                        ButtonStartStop.setForeground(Color.GREEN);
                     } catch (Exception e1) {
-                        e1.printStackTrace();
+                        JOptionPane d = new JOptionPane();
+                        d.showMessageDialog( PanelApp.getParent(),
+                                e1.getMessage(),
+                                "Erreur lors du désabonnement du client",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -89,16 +129,12 @@ public class App implements NotificationListener {
         });
     }
 
-    public static void main(String[] args) {
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
         }
         JFrame frame = new JFrame("wsn-abonnement");
         JPanel panel = new App().PanelApp;
@@ -114,7 +150,7 @@ public class App implements NotificationListener {
     }
 
     public void updateNotificationView(Notification notification) {
-        TextPaneNotification.setText(notification.message);
+        EditorPaneNotification.setText(notification.message);
 
         DefaultTableModel tableModel = (DefaultTableModel) TableNotificationHeaders.getModel();
         tableModel.setRowCount(0);
@@ -127,4 +163,99 @@ public class App implements NotificationListener {
 
     }
 
+
+    class AppTextField implements AppFormField {
+
+        public JTextField textField;
+        public Boolean isPlaceholder = false;
+        public String placeholder;
+        public String defaultText;
+        public Boolean notnull;
+
+        public AppTextField(JTextField jTextField, String placeholder, String defaultText, Boolean notnull) {
+            this.textField = jTextField;
+            this.placeholder = placeholder;
+            this.defaultText = defaultText;
+            this.notnull = notnull;
+            if (defaultText == null || defaultText.isEmpty()){
+                showPlaceholder();
+            } else {
+                showDefaultText();
+            }
+            listeners();
+        }
+
+        public String getText(){
+            if (!isPlaceholder){
+                return textField.getText();
+            }
+            return null;
+        }
+
+        private void showDefaultText() {
+            isPlaceholder = false;
+            textField.setForeground(Color.BLACK);
+            textField.setFont(new Font(TextUrl.getFont().getFamily(), Font.PLAIN, TextUrl.getFont().getSize()));
+            textField.setText(defaultText);
+        }
+
+        private void showPlaceholder() {
+            isPlaceholder = true;
+            textField.setText(placeholder);
+            textField.setForeground(Color.GRAY);
+            textField.setFont(new Font(TextUrl.getFont().getFamily(), Font.ITALIC, TextUrl.getFont().getSize()));
+        }
+
+        private void listeners(){
+            textField.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(isPlaceholder) {
+                        showDefaultText();
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(textField.getText().isEmpty()){
+                       showPlaceholder();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public Boolean valider() {
+            if (notnull) {
+                if (getText() == null || getText().isEmpty()){
+                    textField.setForeground(Color.RED);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    }
+
+
+    interface AppFormField {
+        Boolean valider();
+    }
+
+
+    class AppForm {
+
+        public List<AppFormField> formFields = new ArrayList<>();
+
+        public Boolean valider(){
+            boolean valide = true;
+            for (AppFormField formField : formFields){
+                if(!formField.valider()){
+                    valide = false;
+                }
+            }
+            return valide;
+        }
+
+    }
 }

@@ -21,7 +21,8 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
-          <text value="http://n1.rec.canaltrain.sncf.fr/cxf/wsn/NotificationBroker"/>
+          <requestFocusEnabled value="true"/>
+          <text value=""/>
           <toolTipText value="URL Serveur"/>
         </properties>
       </component>
@@ -41,7 +42,8 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
-          <text value="GeolocTopic"/>
+          <requestFocusEnabled value="true"/>
+          <text value=""/>
           <toolTipText value="Topic"/>
         </properties>
       </component>
@@ -69,6 +71,7 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
+          <requestFocusEnabled value="true"/>
         </properties>
       </component>
       <component id="5dc12" class="javax.swing.JButton" binding="ButtonStartStop">
@@ -81,6 +84,7 @@
         <properties>
           <background color="-16711831"/>
           <margin top="0" left="0" bottom="0" right="0"/>
+          <selected value="true"/>
           <text value="Start"/>
         </properties>
       </component>
@@ -100,6 +104,7 @@
         </constraints>
         <properties>
           <font name="Consolas"/>
+          <requestFocusEnabled value="true"/>
           <text value="8011"/>
         </properties>
       </component>
@@ -152,14 +157,13 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="821b2" class="javax.swing.JTextArea" binding="TextPaneNotification">
+                  <component id="307e6" class="javax.swing.JEditorPane" binding="EditorPaneNotification">
                     <constraints/>
                     <properties>
                       <alignmentX value="0.0"/>
                       <alignmentY value="0.0"/>
                       <editable value="false"/>
                       <font name="Consolas" size="12"/>
-                      <lineWrap value="true"/>
                     </properties>
                   </component>
                 </children>
