@@ -1,4 +1,4 @@
-package com.sncf.marlier.wsn.client.application.soap;
+package fr.icefeather.wsn.client.application.soap;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.sncf.marlier.wsn.client.application.soap;
+package fr.icefeather.wsn.client.application.soap;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.namespace.QName;

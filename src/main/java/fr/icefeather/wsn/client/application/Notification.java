@@ -1,4 +1,4 @@
-package com.sncf.marlier.wsn.client.application;
+package fr.icefeather.wsn.client.application;
 
 import com.sun.net.httpserver.Headers;
 

@@ -1,6 +1,6 @@
-package com.sncf.marlier.wsn.client.application;
+package fr.icefeather.wsn.client.application;
 
-import com.sncf.marlier.wsn.client.application.soap.SubscribeResponse;
+import fr.icefeather.wsn.client.application.soap.SubscribeResponse;
 import org.oasis_open.docs.wsn.b_2.*;
 
 import javax.xml.bind.*;
@@ -35,10 +35,10 @@ public class Abonnement {
     }
 
 
-    public SubscribeResponse abonnement() throws JAXBException, SOAPException, IOException {
+    public fr.icefeather.wsn.client.application.soap.SubscribeResponse abonnement() throws JAXBException, SOAPException, IOException {
 
         Subscribe subscribeRequest = new Subscribe();
-        SubscribeResponse subscribeResponse = new SubscribeResponse();
+        fr.icefeather.wsn.client.application.soap.SubscribeResponse subscribeResponse = new fr.icefeather.wsn.client.application.soap.SubscribeResponse();
 
         W3CEndpointReference endpointReference = new W3CEndpointReferenceBuilder().address(adresseClient).build();
         subscribeRequest.setConsumerReference(endpointReference);
