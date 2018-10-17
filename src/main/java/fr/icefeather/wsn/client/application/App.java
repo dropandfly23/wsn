@@ -9,10 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class App implements NotificationListener {
     private JTextField TextUrl;
@@ -21,7 +19,7 @@ public class App implements NotificationListener {
     private JList ListNotifications;
     private ListModel<String> ListModelMessagesRecus;
     private JPanel PanelApp;
-    private JTextPane TextPaneNotification;
+    private JTextArea TextPaneNotification;
     private JScrollPane ScrollPaneTextPaneNotification;
     private JScrollPane ScrollPaneListNotifications;
     private JTextField TextPort;
@@ -37,6 +35,9 @@ public class App implements NotificationListener {
     public App() {
         ListModelMessagesRecus = new DefaultListModel();
         ListNotifications.setModel(ListModelMessagesRecus);
+
+        ScrollPaneTextPaneNotification.setBorder(null);
+        ScrollPaneListNotifications.setBorder(null);
 
         DefaultTableModel TableNotificationHeadersModel = new DefaultTableModel();
         TableNotificationHeadersModel.setColumnIdentifiers(new String[] { "header", "value" });
@@ -79,12 +80,11 @@ public class App implements NotificationListener {
             }
         });
 
+
         ListNotifications.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 int selected = ListNotifications.getSelectedIndex();
-                TextPaneNotification.setText(listeNotifications.get(selected).message);
-                updateHeadersTableModel(listeNotifications.get(selected).getHeaders());
-                ((DefaultTableModel) TableNotificationHeaders.getModel()).fireTableDataChanged();
+                updateNotificationView(listeNotifications.get(selected));
             }
         });
     }
@@ -113,14 +113,18 @@ public class App implements NotificationListener {
         ((DefaultListModel) ListNotifications.getModel()).addElement(notification.getDate());
     }
 
-    public void updateHeadersTableModel(Headers headers) {
+    public void updateNotificationView(Notification notification) {
+        TextPaneNotification.setText(notification.message);
+
         DefaultTableModel tableModel = (DefaultTableModel) TableNotificationHeaders.getModel();
         tableModel.setRowCount(0);
-        Iterator headersIter = headers.entrySet().iterator();
+        Iterator headersIter = notification.getHeaders().entrySet().iterator();
         while (headersIter.hasNext()) {
             Map.Entry entry = (Map.Entry) headersIter.next();
-            tableModel.addRow(new Object[] { entry.getKey().toString(), entry.getValue().toString() });
+            tableModel.addRow(new Object[] { entry.getKey(), ((LinkedList)entry.getValue()).getFirst() });
         }
+        ((DefaultTableModel) TableNotificationHeaders.getModel()).fireTableDataChanged();
+
     }
 
 }
