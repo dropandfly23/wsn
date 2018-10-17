@@ -13,48 +13,6 @@
     </clientProperties>
     <border type="none"/>
     <children>
-      <splitpane id="df2e5" binding="SplitPaneMessages">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="200"/>
-          </grid>
-        </constraints>
-        <properties>
-          <dividerLocation value="189"/>
-        </properties>
-        <border type="none"/>
-        <children>
-          <scrollpane id="6caba" binding="ScrollPaneTextPaneNotification">
-            <constraints>
-              <splitpane position="right"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="af40a" class="javax.swing.JTextPane" binding="TextPaneNotification">
-                <constraints/>
-                <properties>
-                  <editable value="false"/>
-                  <font name="Consolas" size="12"/>
-                </properties>
-              </component>
-            </children>
-          </scrollpane>
-          <scrollpane id="eabe8" binding="ScrollPaneListNotifications">
-            <constraints>
-              <splitpane position="left"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="eb94a" class="javax.swing.JList" binding="ListNotifications">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
-          </scrollpane>
-        </children>
-      </splitpane>
       <component id="168a5" class="javax.swing.JTextField" binding="TextUrl">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -162,6 +120,69 @@
           </grid>
         </constraints>
       </hspacer>
+      <splitpane id="7cdd4" binding="SplitPaneNotificationPanel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties>
+          <dividerLocation value="200"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <splitpane id="3ae0a" binding="SplitPaneNotificationDetail">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <dividerLocation value="250"/>
+              <orientation value="0"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="6caba" binding="ScrollPaneTextPaneNotification">
+                <constraints>
+                  <splitpane position="left"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="af40a" class="javax.swing.JTextPane" binding="TextPaneNotification">
+                    <constraints/>
+                    <properties>
+                      <contentType value="text/plain"/>
+                      <editable value="false"/>
+                      <font name="Consolas" size="12"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="3207f" class="javax.swing.JTable" binding="TableNotificationHeaders">
+                <constraints>
+                  <splitpane position="right"/>
+                </constraints>
+                <properties>
+                  <autoCreateRowSorter value="true"/>
+                </properties>
+              </component>
+            </children>
+          </splitpane>
+          <scrollpane id="eabe8" binding="ScrollPaneListNotifications">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="eb94a" class="javax.swing.JList" binding="ListNotifications">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </splitpane>
     </children>
   </grid>
 </form>

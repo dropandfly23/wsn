@@ -88,17 +88,9 @@ public class Abonnement {
         subscribeContextMarshaller.marshal(requete, new DOMResult(requeteElement) );
         SOAPMessage requeteSoap = createSOAPRequest(requeteElement);
 
-        requeteSoap.writeTo(out);
-        System.out.println(new String(out.toByteArray()));
-        out.flush();
-
         createSOAPConnection();
 
         SOAPMessage reponseSoap = soapConnection.call(requeteSoap, adresse);
-
-        reponseSoap.writeTo(out);
-        System.out.println(new String(out.toByteArray()));
-        out.flush();
 
         JAXBContext reponseContext = JAXBContext.newInstance(reponse.getClass());
         Unmarshaller subscribeResponseContextUnmarshaller = reponseContext.createUnmarshaller();
