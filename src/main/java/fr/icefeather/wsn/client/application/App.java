@@ -3,11 +3,8 @@ package fr.icefeather.wsn.client.application;
 import org.apache.batik.util.gui.xmleditor.XMLEditorKit;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.BorderUIResource;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,6 +29,7 @@ public class App implements NotificationListener {
     private JTable TableNotificationHeaders;
     private JSplitPane SplitPaneNotificationDetail;
     private JSplitPane SplitPaneNotificationPanel;
+    private JScrollPane ScrollPaneTableNotificationHeaders;
 
     private Abonnement abonnement;
     private Serveur serveur;
@@ -39,15 +37,14 @@ public class App implements NotificationListener {
 
 
     public App() {
+
         // DATA
         listeNotifications = new ArrayList<Notification>();
 
         // ELEMENTS
-//        ButtonStartStop.requestFocusInWindow();
-
         final AppForm formulaire = new AppForm();
 
-        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", null, true);
+        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", "http://localhost/cxf/wsn/NotificationBroker", true);
         formulaire.formFields.add(urlTextField);
         final AppTextField topicTextField = new AppTextField(TextTopic, "Topic", null, true);
         formulaire.formFields.add(topicTextField);
@@ -62,9 +59,11 @@ public class App implements NotificationListener {
         ListNotifications.setModel(ListModelMessagesRecus);
 
         EditorPaneNotification.setEditorKit(new XMLEditorKit());
+        ScrollPaneTextPaneNotification.setPreferredSize(EditorPaneNotification.getSize());
 
         ScrollPaneTextPaneNotification.setBorder(null);
         ScrollPaneListNotifications.setBorder(null);
+        ScrollPaneTableNotificationHeaders.setBorder(null);
 
         DefaultTableModel TableNotificationHeadersModel = new DefaultTableModel();
         TableNotificationHeadersModel.setColumnIdentifiers(new String[] { "header", "value" });
@@ -85,8 +84,9 @@ public class App implements NotificationListener {
                             serveur.start();
                             abonnement.abonnement();
                             ButtonStartStop.setText("Stop");
-                            ButtonStartStop.setForeground(Color.RED);
+                            ButtonStartStop.setBackground(Color.RED);
                         } catch (Exception e1) {
+                            serveur.stop();
                             JOptionPane d = new JOptionPane();
                             d.showMessageDialog( PanelApp.getParent(),
                                     e1.getMessage(),
@@ -108,7 +108,7 @@ public class App implements NotificationListener {
                         serveur.stop();
                         abonnement.desabonnement();
                         ButtonStartStop.setText("Start");
-                        ButtonStartStop.setForeground(Color.GREEN);
+                        ButtonStartStop.setBackground(Color.GREEN);
                     } catch (Exception e1) {
                         JOptionPane d = new JOptionPane();
                         d.showMessageDialog( PanelApp.getParent(),
@@ -136,7 +136,7 @@ public class App implements NotificationListener {
                 break;
             }
         }
-        JFrame frame = new JFrame("wsn-abonnement");
+        JFrame frame = new JFrame("wsn-client");
         JPanel panel = new App().PanelApp;
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +150,7 @@ public class App implements NotificationListener {
     }
 
     public void updateNotificationView(Notification notification) {
-        EditorPaneNotification.setText(notification.message);
+        EditorPaneNotification.setText(notification.getXmlMessage());
 
         DefaultTableModel tableModel = (DefaultTableModel) TableNotificationHeaders.getModel();
         tableModel.setRowCount(0);

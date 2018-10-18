@@ -141,7 +141,7 @@
               <splitpane position="right"/>
             </constraints>
             <properties>
-              <dividerLocation value="250"/>
+              <dividerLocation value="255"/>
               <orientation value="0"/>
             </properties>
             <border type="none"/>
@@ -153,29 +153,47 @@
                 <properties>
                   <alignmentX value="0.0"/>
                   <alignmentY value="0.0"/>
+                  <horizontalScrollBarPolicy value="30"/>
                   <preferredSize width="420" height="250"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="307e6" class="javax.swing.JEditorPane" binding="EditorPaneNotification">
+                  <component id="5ea9" class="javax.swing.JEditorPane" binding="EditorPaneNotification">
                     <constraints/>
                     <properties>
                       <alignmentX value="0.0"/>
                       <alignmentY value="0.0"/>
+                      <autoscrolls value="false"/>
                       <editable value="false"/>
                       <font name="Consolas" size="12"/>
+                      <maximumSize width="-1" height="-1"/>
                     </properties>
                   </component>
                 </children>
               </scrollpane>
-              <component id="3207f" class="javax.swing.JTable" binding="TableNotificationHeaders">
+              <scrollpane id="488c" binding="ScrollPaneTableNotificationHeaders">
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
                 <properties>
-                  <autoCreateRowSorter value="true"/>
+                  <alignmentX value="0.0"/>
+                  <alignmentY value="0.0"/>
+                  <horizontalScrollBarPolicy value="31"/>
+                  <maximumSize width="-1" height="-1"/>
+                  <preferredSize width="453" height="150"/>
+                  <requestFocusEnabled value="true"/>
                 </properties>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="3207f" class="javax.swing.JTable" binding="TableNotificationHeaders">
+                    <constraints/>
+                    <properties>
+                      <autoCreateRowSorter value="true"/>
+                      <maximumSize width="-1" height="-1"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </splitpane>
           <scrollpane id="eabe8" binding="ScrollPaneListNotifications">
