@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -166,14 +167,14 @@ public class App implements NotificationListener {
 
     class AppTextField implements AppFormField {
 
-        public JTextField textField;
+        public JTextComponent textComponent;
         public Boolean isPlaceholder = false;
         public String placeholder;
         public String defaultText;
         public Boolean notnull;
 
-        public AppTextField(JTextField jTextField, String placeholder, String defaultText, Boolean notnull) {
-            this.textField = jTextField;
+        public AppTextField(JTextComponent textComponent, String placeholder, String defaultText, Boolean notnull) {
+            this.textComponent = textComponent;
             this.placeholder = placeholder;
             this.defaultText = defaultText;
             this.notnull = notnull;
@@ -187,27 +188,27 @@ public class App implements NotificationListener {
 
         public String getText(){
             if (!isPlaceholder){
-                return textField.getText();
+                return textComponent.getText();
             }
             return null;
         }
 
         private void showDefaultText() {
             isPlaceholder = false;
-            textField.setForeground(Color.BLACK);
-            textField.setFont(new Font(TextUrl.getFont().getFamily(), Font.PLAIN, TextUrl.getFont().getSize()));
-            textField.setText(defaultText);
+            textComponent.setForeground(Color.BLACK);
+            textComponent.setFont(new Font(textComponent.getFont().getFamily(), Font.PLAIN, textComponent.getFont().getSize()));
+            textComponent.setText(defaultText);
         }
 
         private void showPlaceholder() {
             isPlaceholder = true;
-            textField.setText(placeholder);
-            textField.setForeground(Color.GRAY);
-            textField.setFont(new Font(TextUrl.getFont().getFamily(), Font.ITALIC, TextUrl.getFont().getSize()));
+            textComponent.setText(placeholder);
+            textComponent.setForeground(Color.GRAY);
+            textComponent.setFont(new Font(textComponent.getFont().getFamily(), Font.ITALIC, textComponent.getFont().getSize()));
         }
 
         private void listeners(){
-            textField.addFocusListener(new FocusListener() {
+            textComponent.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
                     if(isPlaceholder) {
@@ -217,7 +218,7 @@ public class App implements NotificationListener {
 
                 @Override
                 public void focusLost(FocusEvent e) {
-                    if(textField.getText().isEmpty()){
+                    if(textComponent.getText().isEmpty()){
                        showPlaceholder();
                     }
                 }
@@ -228,7 +229,7 @@ public class App implements NotificationListener {
         public Boolean valider() {
             if (notnull) {
                 if (getText() == null || getText().isEmpty()){
-                    textField.setForeground(Color.RED);
+                    textComponent.setForeground(Color.RED);
                     return false;
                 }
             }
