@@ -6,13 +6,13 @@
 
 :fr: C'est un jar executable, une fois téléchargé, double-cliquez pour lancer le programme
 
-:en: This is an executable jar, once downloaded, just double click on it to launch
+:uk: This is an executable jar, once downloaded, just double click on it to launch
 
 ## Description
 
 :fr: Outil avec interface graphique minimal servant à s'abonner à un broker WSN (cf : apache cxf)
 
-:en: Tool with minimal GUI used to subscribe to a WSN broker (cf : apache cxf)
+:uk: Tool with minimal GUI used to subscribe to a WSN broker (cf : apache cxf)
 
 ## Screenshots
 
