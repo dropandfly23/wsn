@@ -1,17 +1,23 @@
 package fr.icefeather.wsn.client.application;
 
-import com.sun.net.httpserver.*;
+import org.apache.cxf.helpers.IOUtils;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import java.io.*;
-import java.net.InetSocketAddress;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class Serveur {
 
     private int port;
     private NotificationListener notificationListener;
-
-    private HttpServer server;
-    private HttpContext context;
+    private Server server;
+    private Boolean actif = false;
 
     public int getPort() {
         return port;
@@ -29,17 +35,23 @@ public class Serveur {
         this.notificationListener = notificationListener;
     }
 
-    public void start() throws IOException{
-        server = HttpServer.create(new InetSocketAddress(port), 0);
-        context = server.createContext("/", new Handler(notificationListener));
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void start() throws Exception {
+        server = new Server(port);
+        server.setHandler(new Handler(notificationListener));
         server.start();
+        actif = true;
     }
 
-    public void stop() {
-        server.stop(0);
+    public void stop() throws Exception {
+        server.stop();
+        actif = false;
     }
 
-    static class Handler implements HttpHandler {
+    static class Handler extends AbstractHandler {
 
         private NotificationListener notificationListener;
 
@@ -48,35 +60,39 @@ public class Serveur {
         }
 
         @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
+        public void handle( String target,
+                Request baseRequest,
+                HttpServletRequest request,
+                HttpServletResponse response ) throws IOException, ServletException
+        {
+            response.setContentType("text/html; charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
 
-            InputStreamReader isr =  new InputStreamReader(httpExchange.getRequestBody(),"utf-8");
-            BufferedReader br = new BufferedReader(isr);
+            PrintWriter out = response.getWriter();
 
-            // From now on, the right way of moving from bytes to utf-8 characters:
+            out.println("Hello");
 
-            int b;
-            StringBuilder buf = new StringBuilder(512);
-            while ((b = br.read()) != -1) {
-                buf.append((char) b);
+            if ("POST".equalsIgnoreCase(request.getMethod())){
+                String message = IOUtils.toString(request.getReader());
+                notification(message, getHeaders(baseRequest));
             }
 
-            br.close();
-            isr.close();
-
-            if (httpExchange.getRequestMethod().equals("POST")){
-                notification(buf.toString(), httpExchange.getRequestHeaders());
-                httpExchange.getRequestHeaders().entrySet();
-            }
-
-            String response = "This is the response";
-            httpExchange.sendResponseHeaders(200, response.length());
+            baseRequest.setHandled(true);
         }
 
-        private void notification(String message, Headers headers) {
+        public Map<String, List<String>> getHeaders(Request baseRequest) {
+            Map<String, List<String>> headersList = new HashMap<>();
+            Enumeration<String> headerNames = baseRequest.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                headersList.put(headerName, Collections.list(baseRequest.getHeaders(headerName)));
+            }
+            return headersList;
+        }
+
+        private void notification(String message, Map<String, List<String>> headers) {
             notificationListener.nouvelleNotification(new Notification(message, headers));
         }
-
 
     }
 

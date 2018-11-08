@@ -24,6 +24,7 @@ public class Abonnement {
     private String topic;
     private String filtre;
     private String adresseManager;
+    private Boolean actif = false;
 
     private SOAPConnection soapConnection;
 
@@ -35,10 +36,10 @@ public class Abonnement {
     }
 
 
-    public fr.icefeather.wsn.client.application.soap.SubscribeResponse abonnement() throws JAXBException, SOAPException, IOException {
+    public SubscribeResponse abonnement() throws JAXBException, SOAPException, IOException {
 
         Subscribe subscribeRequest = new Subscribe();
-        fr.icefeather.wsn.client.application.soap.SubscribeResponse subscribeResponse = new fr.icefeather.wsn.client.application.soap.SubscribeResponse();
+        SubscribeResponse subscribeResponse = new SubscribeResponse();
 
         W3CEndpointReference endpointReference = new W3CEndpointReferenceBuilder().address(adresseClient).build();
         subscribeRequest.setConsumerReference(endpointReference);
@@ -60,6 +61,8 @@ public class Abonnement {
 
         adresseManager = subscribeResponse.getSubscriptionReference().getAddress();
 
+        actif = true;
+
         return subscribeResponse;
     }
 
@@ -70,6 +73,8 @@ public class Abonnement {
         UnsubscribeResponse unsubscribeResponse = new UnsubscribeResponse();
 
         unsubscribeResponse = (UnsubscribeResponse) makeRequest(unsubscribeRequest, unsubscribeResponse, adresseManager);
+
+        actif = false;
 
         return unsubscribeResponse;
     }
@@ -164,4 +169,9 @@ public class Abonnement {
     public void setAdresseManager(String adresseManager) {
         this.adresseManager = adresseManager;
     }
+
+    public Boolean isActif() {
+        return actif;
+    }
+
 }

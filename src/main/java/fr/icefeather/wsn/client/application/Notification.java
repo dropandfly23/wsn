@@ -1,21 +1,18 @@
 package fr.icefeather.wsn.client.application;
 
-import com.sun.net.httpserver.Headers;
 
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Notification {
     public Date date;
     public String message;
-    public Headers headers;
+    public Map<String, List<String>> headers;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -23,7 +20,7 @@ public class Notification {
         this.date = new Date();
     }
 
-    public Notification(String message, Headers headers){
+    public Notification(String message, Map<String, List<String>> headers){
         this.date = new Date();
         this.message = message;
         this.headers = headers;
@@ -49,17 +46,8 @@ public class Notification {
         }
     }
 
-    public Headers getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 
-    public List<Map.Entry> getHeadersList() {
-        List<Map.Entry> headersList = new ArrayList<>();
-        Iterator headersIter = headers.entrySet().iterator();
-        while (headersIter.hasNext()) {
-            Map.Entry entry = (Map.Entry)headersIter.next();
-            headersList.add(entry);
-        }
-        return headersList;
-    }
 }
