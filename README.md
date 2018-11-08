@@ -2,7 +2,7 @@
 
 ## Download
 
-[:arrow_down: wsn-client-1.1.jar](https://drive.google.com/file/d/11iTKLgiAP1CCCPoVATbkkCwjbXz0wQf8/view?usp=sharing)
+[:arrow_down: wsn-client-1.4.jar](https://github.com/IceFeather/wsn-client/releases/download/v1.4/wsn-client-1.4.jar)
 
 :fr: C'est un jar executable, une fois téléchargé, double-cliquez pour lancer le programme
 
