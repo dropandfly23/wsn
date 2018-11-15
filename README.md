@@ -2,7 +2,7 @@
 
 ## Download
 
-[:arrow_down: wsn-client-1.4.jar](https://github.com/IceFeather/wsn-client/releases/download/v1.4/wsn-client-1.4.jar)
+[:arrow_down: wsn-client-2.0.jar](https://github.com/IceFeather/wsn-client/releases/download/v2.0/wsn-client-2.0.jar)
 
 :fr: C'est un jar executable, une fois téléchargé, double-cliquez pour lancer le programme
 
@@ -15,7 +15,3 @@
 :uk: Tool with minimal GUI used to subscribe to a WSN broker (cf : apache cxf)
 
 ## Screenshots
-
-![wsn-client-gui-desc.png](https://lh3.googleusercontent.com/u/0/d/1hQaLmCgRHrOMdAYNQ8uwao3LIRO34UUy=s1600-k-iv1)
-
-![wsn-client-gui-notif.png](https://lh3.googleusercontent.com/u/0/d/1PRyou6rrmQjBSmenS3YMStXTnNKrviPT=s1600-k-iv1)
