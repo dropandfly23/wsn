@@ -1,5 +1,6 @@
 package fr.icefeather.wsn.client.application;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -41,7 +42,7 @@ public class Serveur {
 
     public void start() throws Exception {
         server = new Server(port);
-        server.setHandler(new Handler(notificationListener));
+        server.setHandler(new NHandler(notificationListener));
         server.start();
         actif = true;
     }
@@ -51,11 +52,11 @@ public class Serveur {
         actif = false;
     }
 
-    static class Handler extends AbstractHandler {
+    static class NHandler extends AbstractHandler {
 
         private NotificationListener notificationListener;
 
-        public Handler(NotificationListener notificationListener) {
+        public NHandler(NotificationListener notificationListener) {
             this.notificationListener = notificationListener;
         }
 
@@ -80,17 +81,18 @@ public class Serveur {
             baseRequest.setHandled(true);
         }
 
-        public Map<String, List<String>> getHeaders(Request baseRequest) {
-            Map<String, List<String>> headersList = new HashMap<>();
+        public Map<String, String> getHeaders(Request baseRequest) {
+            Map<String, String> headersList = new HashMap<>();
             Enumeration<String> headerNames = baseRequest.getHeaderNames();
             while (headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
-                headersList.put(headerName, Collections.list(baseRequest.getHeaders(headerName)));
+                String headerValue = StringUtils.join(Collections.list(baseRequest.getHeaders(headerName)), ";");
+                headersList.put(headerName, headerValue);
             }
             return headersList;
         }
 
-        private void notification(String message, Map<String, List<String>> headers) {
+        private void notification(String message, Map<String, String> headers) {
             notificationListener.nouvelleNotification(new Notification(message, headers));
         }
 
