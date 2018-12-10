@@ -14,4 +14,4 @@
 
 :uk: Tool with minimal GUI used to subscribe to a WSN broker (cf : apache cxf)
 
-## Screenshots
+## See the wiki for more informations
