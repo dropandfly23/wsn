@@ -1,5 +1,7 @@
 # WSN Client
 
+![image](https://user-images.githubusercontent.com/14314847/49725138-4d193d00-fc6b-11e8-93d4-a0b65028e663.png)
+
 ## Download
 
 [:arrow_down: wsn-client-2.0.jar](https://github.com/IceFeather/wsn-client/releases/download/v2.0/wsn-client-2.0.jar)
