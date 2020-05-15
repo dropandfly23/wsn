@@ -75,7 +75,9 @@ public class Serveur {
 
             if ("POST".equalsIgnoreCase(request.getMethod())){
                 String message = IOUtils.toString(request.getReader());
-                notification(message, getHeaders(baseRequest));
+                System.out.print("the message is : "+message);
+                //notification(message);
+                notification(message,getHeaders(baseRequest));
             }
 
             baseRequest.setHandled(true);
@@ -84,8 +86,13 @@ public class Serveur {
         public Map<String, String> getHeaders(Request baseRequest) {
             Map<String, String> headersList = new HashMap<>();
             Enumeration<String> headerNames = baseRequest.getHeaderNames();
+            System.out.println("headername size: "+ Collections.list(baseRequest.getHeaderNames()).size());
+
             while (headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
+                System.out.println("headername : "+headerName);
+                System.out.println("headername value is  : "+Collections.list(baseRequest.getHeaders(headerName)));
+
                 String headerValue = StringUtils.join(Collections.list(baseRequest.getHeaders(headerName)), ";");
                 headersList.put(headerName, headerValue);
             }
@@ -94,6 +101,9 @@ public class Serveur {
 
         private void notification(String message, Map<String, String> headers) {
             notificationListener.nouvelleNotification(new Notification(message, headers));
+        }
+        private void notification(String message) {
+            notificationListener.nouvelleNotification(new Notification(message));
         }
 
     }

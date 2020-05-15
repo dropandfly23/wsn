@@ -31,7 +31,12 @@ public class Notification {
         this.date = new Date();
     }
 
-    public Notification(String message, Map<String, String> headers){
+    public Notification(String message){
+        this.date = new Date();
+        this.message = message;
+        //this.headers = headers;
+    }
+    public Notification(String message,Map<String,String> headers){
         this.date = new Date();
         this.message = message;
         this.headers = headers;

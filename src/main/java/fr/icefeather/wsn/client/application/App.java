@@ -33,6 +33,7 @@ public class App implements NotificationListener {
     private JScrollPane ScrollPaneListNotifications;
     private JTextField TextPort;
     private JTextField TextFiltre;
+    private JTextField TextUseraw;
     private JTable TableNotificationHeaders;
     private JSplitPane SplitPaneNotificationDetail;
     private JSplitPane SplitPaneNotificationPanel;
@@ -66,7 +67,7 @@ public class App implements NotificationListener {
 
         final AppForm formulaire = new AppForm();
 
-        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", "http://localhost/cxf/wsn/NotificationBroker", true);
+        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", "http://localhost:8181/cxf/wsn/NotificationBroker", true);
         formulaire.formFields.add(urlTextField);
         final AppTextField topicTextField = new AppTextField(TextTopic, "Topic", null, true);
         formulaire.formFields.add(topicTextField);
@@ -74,6 +75,9 @@ public class App implements NotificationListener {
         formulaire.formFields.add(filtreTextField);
         final AppTextField portTextField = new AppTextField(TextPort, "8011", "8011", true);
         formulaire.formFields.add(portTextField);
+        final AppTextField userawTextField = new AppTextField(TextUseraw, "useraw", "false", true);
+        formulaire.formFields.add(userawTextField);
+
 
         // VIEWS
 
@@ -141,7 +145,8 @@ public class App implements NotificationListener {
                 if (!serveur.isActif() && (abonnement == null || !abonnement.isActif())) {
                     if (formulaire.valider()) {
                         try {
-                            abonnement = new Abonnement(urlTextField.getText(), portTextField.getText(), topicTextField.getText(), filtreTextField.getText());
+                            abonnement = new Abonnement(urlTextField.getText(), portTextField.getText(), topicTextField.getText(),Boolean.parseBoolean(TextUseraw.getText()),
+                                    filtreTextField.getText());
                         } catch (UnknownHostException abonnementException) {
                             afficherErreur("Problème réseau", abonnementException);
                             return;
@@ -168,7 +173,7 @@ public class App implements NotificationListener {
             @Override public void actionPerformed(ActionEvent e) {
                 notifications.notifications.clear();
                 ((DefaultListModel) ListNotifications.getModel()).removeAllElements();
-                updateNotificationView(new Notification("", null));
+                updateNotificationView(new Notification(""));
             }
         });
 

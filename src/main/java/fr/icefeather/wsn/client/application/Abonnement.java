@@ -23,15 +23,17 @@ public class Abonnement {
     private String adresseServer;
     private String topic;
     private String filtre;
+    private boolean useraw;
     private String adresseManager;
     private Boolean actif = false;
 
     private SOAPConnection soapConnection;
 
-    public Abonnement(String adresse, String port, String topic, String filtre) throws UnknownHostException {
+    public Abonnement(String adresse, String port, String topic,boolean useraw,String filtre) throws UnknownHostException {
         this.adresseClient = "http://"+InetAddress.getLocalHost().getHostAddress()+":"+port+"/wsn-client";
         this.adresseServer = adresse;
         this.topic = topic;
+        this.useraw = useraw;
         this.filtre = filtre;
     }
 
@@ -44,6 +46,10 @@ public class Abonnement {
         W3CEndpointReference endpointReference = new W3CEndpointReferenceBuilder().address(adresseClient).build();
         subscribeRequest.setConsumerReference(endpointReference);
         subscribeRequest.setFilter(new FilterType());
+       if(useraw==true){
+           subscribeRequest.setSubscriptionPolicy(new Subscribe.SubscriptionPolicy());
+           subscribeRequest.getSubscriptionPolicy().getAny().add(new UseRaw());
+       }
         if (topic != null) {
             TopicExpressionType topicExp = new TopicExpressionType();
             topicExp.getContent().add(topic);
@@ -173,5 +179,6 @@ public class Abonnement {
     public Boolean isActif() {
         return actif;
     }
+
 
 }
