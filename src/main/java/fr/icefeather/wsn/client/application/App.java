@@ -173,7 +173,7 @@ public class App implements NotificationListener {
             @Override public void actionPerformed(ActionEvent e) {
                 notifications.notifications.clear();
                 ((DefaultListModel) ListNotifications.getModel()).removeAllElements();
-                updateNotificationView(new Notification(""));
+                updateNotificationView(new Notification("",null));
             }
         });
 
