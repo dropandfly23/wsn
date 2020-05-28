@@ -67,7 +67,7 @@ public class App implements NotificationListener {
 
         final AppForm formulaire = new AppForm();
 
-        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", "http://localhost:8181/cxf/wsn/NotificationBroker", true);
+        final AppTextField urlTextField = new AppTextField(TextUrl, "http:// url broker wsn", "http://localhost/cxf/wsn/NotificationBroker", true);
         formulaire.formFields.add(urlTextField);
         final AppTextField topicTextField = new AppTextField(TextTopic, "Topic", null, true);
         formulaire.formFields.add(topicTextField);

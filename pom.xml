@@ -13,6 +13,31 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>de.thz.cameracontrol.server.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- LAUNCH4J ENDE -->
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>
                 <version>1.0-beta-1</version>
@@ -60,6 +85,53 @@
                     <target>7</target>
                 </configuration>
             </plugin>
+<!-- LAUNCH4J CREATE EXE IN MVN PLUGIN-->
+            <plugin>
+                    <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                    <artifactId>launch4j-maven-plugin</artifactId>
+                    <version>1.7.25</version>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals><goal>launch4j</goal></goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/wsn-client-updated.exe</outfile>
+                            <jar>target/wsn-client-2.0-jar-with-dependencies.jar</jar>
+                            <downloadUrl>http://java.com/download</downloadUrl>
+                            <errTitle>encc</errTitle>
+                            <classPath>
+                                <mainClass>fr.icefeather.wsn.client.application.App</mainClass>
+                                <addDependencies>true</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <icon>src/main/resources/icons/inbox.ico</icon>
+
+                            <jre>
+                                <minVersion>1.7.0</minVersion>
+                                <opts>
+                                    <opt>-Djava.endorsed.dirs=./endorsed</opt>
+                                </opts>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>${project.name}</txtFileVersion>
+                                <fileDescription>${project.name}</fileDescription>
+                                <copyright>MIT</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>1.0.0.0</txtProductVersion>
+                                <productName>${project.name}</productName>
+                                <originalFilename>wsn-client-updated.exe</originalFilename>
+                                <!-- internalName is mandatory -->
+                                <internalName>wsn-client-updated</internalName>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
 
@@ -105,5 +177,9 @@
             <version>1.9</version>
         </dependency>
     </dependencies>
+
+
+
+
 
 </project>
