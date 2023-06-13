@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.2.15.v20160210</version>
+            <version>9.4.51.v20230217</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
